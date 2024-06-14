@@ -139,7 +139,7 @@ public class OpenFeatureClient implements Client {
         } catch (Exception e) {
             log.error("Unable to correctly evaluate flag with key '{}'", key, e);
             if (details == null) {
-                details = FlagEvaluationDetails.<T>builder().build();
+                details = FlagEvaluationDetails.<T>builder().flagKey(key).build();
             }
             if (e instanceof OpenFeatureError) {
                 details.setErrorCode(((OpenFeatureError) e).getErrorCode());

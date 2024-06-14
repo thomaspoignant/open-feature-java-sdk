@@ -67,4 +67,18 @@ class OpenFeatureClientTest implements HookFixtures {
 
         assertThat(result.getValue()).isTrue();
     }
+
+    @Test
+    void errorDetailsWhenDefaultValueIsNullHasNonNullFlagKey() {
+        OpenFeatureAPI api = mock(OpenFeatureAPI.class);
+        when(api.getProvider(any())).thenReturn(new DoSomethingProvider());
+        when(api.getHooks()).thenReturn(Arrays.asList(mockBooleanHook(), mockStringHook()));
+
+        //noinspection deprecation
+        OpenFeatureClient client = new OpenFeatureClient(api, "name", "version");
+
+        FlagEvaluationDetails<Boolean> actual = client.getBooleanDetails("feature key", null);
+
+        assertThat(actual.getFlagKey()).isNotNull();
+    }
 }
